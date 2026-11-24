@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" width="240" height="240" role="img" aria-label="Logo GKKD Bali">
+  <defs>
+    <linearGradient id="gkkdGrad" x1="15%" y1="10%" x2="85%" y2="90%">
+      <stop offset="0%" stop-color="#0A0010" />
+      <stop offset="52%" stop-color="#3B0052" />
+      <stop offset="82%" stop-color="#8A00B8" />
+      <stop offset="100%" stop-color="#C800FF" />
+    </linearGradient>
+    <linearGradient id="silverArc" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF" />
+      <stop offset="100%" stop-color="#E9E6EC" />
+    </linearGradient>
+  </defs>
+
+  <!-- White square background matching original logo asset specification -->
+  <rect width="240" height="240" rx="120" fill="#FFFFFF" />
+
+  <!-- Outer circular emblem -->
+  <circle cx="120" cy="120" r="108" fill="url(#gkkdGrad)" />
+  <circle cx="120" cy="120" r="105" fill="none" stroke="#E9E6EC" stroke-opacity="0.35" stroke-width="1.5" />
+
+  <!-- Graceful silver-white swoosh arc -->
+  <path
+    d="M 52 142 C 62 92, 108 62, 168 68 C 134 74, 96 100, 82 146 Z"
+    fill="url(#silverArc)"
+    opacity="0.92"
+  />
+
+  <!-- Cross emblem with dark crisp outline -->
+  <g stroke="#0A0010" stroke-width="4" stroke-linejoin="round" paint-order="stroke">
+    <path
+      d="M 113 42 H 127 V 86 H 166 V 100 H 127 V 150 H 113 V 100 H 74 V 86 H 113 Z"
+      fill="#FFFFFF"
+    />
+  </g>
+
+  <!-- Lettering: gkkd bali -->
+  <text
+    x="120"
+    y="186"
+    text-anchor="middle"
+    font-family="'Plus Jakarta Sans', Arial, sans-serif"
+    font-size="25"
+    font-weight="700"
+    letter-spacing="0.5"
+    fill="#FFFFFF"
+    stroke="#0A0010"
+    stroke-width="3.5"
+    paint-order="stroke"
+  >gkkd bali</text>
+</svg>

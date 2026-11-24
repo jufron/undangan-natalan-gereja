@@ -1,0 +1,6 @@
+{
+  "name": "Undangan Ibadah Perayaan Natal Bersama 2026",
+  "description": "Web undangan digital satu halaman untuk Ibadah Perayaan Natal Bersama pada Senin, 28 Desember 2026 pukul 18.00 WITA.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

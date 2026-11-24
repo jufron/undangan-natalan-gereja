@@ -1,0 +1,109 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Global Safety Net: default-deny catch-all
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isPanitia() {
+      return isSignedIn()
+        && request.auth.token.email_verified == true
+        && request.auth.token.email == 'jufrontamoama@gmail.com';
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function isValidHashId(id) {
+      return id is string
+        && id.size() == 64
+        && id.matches('^[a-f0-9]{64}$');
+    }
+
+    function isValidPhoneLock(data) {
+      return data.keys().hasAll(['createdAt'])
+        && data.keys().hasOnly(['createdAt'])
+        && data.createdAt == request.time;
+    }
+
+    function isValidRsvp(data, phoneHash) {
+      return data.keys().hasAll([
+          'namaLengkap',
+          'nomorHp',
+          'nomorHpKanonik',
+          'phoneHash',
+          'alamat',
+          'sumberUndangan',
+          'jumlahPeserta',
+          'namaPendamping',
+          'createdAt'
+        ])
+        && data.keys().hasOnly([
+          'namaLengkap',
+          'nomorHp',
+          'nomorHpKanonik',
+          'phoneHash',
+          'alamat',
+          'sumberUndangan',
+          'jumlahPeserta',
+          'namaPendamping',
+          'createdAt'
+        ])
+        && data.namaLengkap is string
+        && data.namaLengkap.size() >= 3
+        && data.namaLengkap.size() <= 120
+        && data.nomorHp is string
+        && data.nomorHp.size() >= 9
+        && data.nomorHp.size() <= 16
+        && data.nomorHp.matches('^\\+?[0-9]+$')
+        && data.nomorHpKanonik is string
+        && data.nomorHpKanonik.size() >= 11
+        && data.nomorHpKanonik.size() <= 16
+        && data.nomorHpKanonik.matches('^\\+62[0-9]{8,13}$')
+        && data.phoneHash is string
+        && data.phoneHash == phoneHash
+        && isValidHashId(data.phoneHash)
+        && data.alamat is string
+        && data.alamat.size() >= 1
+        && data.alamat.size() <= 500
+        && data.sumberUndangan is string
+        && data.sumberUndangan in ['Teman', 'Keluarga', 'Gereja', 'Media Sosial']
+        && data.jumlahPeserta is int
+        && data.jumlahPeserta >= 1
+        && data.jumlahPeserta <= 10
+        && data.namaPendamping is list
+        && data.namaPendamping.size() == data.jumlahPeserta - 1
+        && data.namaPendamping.size() <= 9
+        && (data.namaPendamping.size() == 0 || (
+          data.namaPendamping[0] is string
+          && data.namaPendamping[0].size() >= 1
+          && data.namaPendamping[0].size() <= 120
+        ))
+        && data.createdAt == request.time;
+    }
+
+    match /rsvp_phones/{phoneHash} {
+      allow get: if isValidHashId(phoneHash);
+      allow list: if false;
+      allow create: if isValidHashId(phoneHash)
+        && isValidPhoneLock(incoming())
+        && existsAfter(/databases/$(database)/documents/rsvps/$(phoneHash));
+      allow update, delete: if false;
+    }
+
+    match /rsvps/{phoneHash} {
+      allow get: if isValidHashId(phoneHash) && isPanitia();
+      allow list: if isPanitia();
+      allow create: if isValidHashId(phoneHash)
+        && isValidRsvp(incoming(), phoneHash)
+        && existsAfter(/databases/$(database)/documents/rsvp_phones/$(phoneHash));
+      allow update, delete: if false;
+    }
+  }
+}

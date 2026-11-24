@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0A0010" />
+      <stop offset="60%" stop-color="#3B0052" />
+      <stop offset="100%" stop-color="#8A00B8" />
+    </linearGradient>
+    <linearGradient id="accentGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#8A00B8" />
+      <stop offset="100%" stop-color="#C800FF" />
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bgGrad)" />
+  <rect x="96" y="140" width="72" height="3" fill="url(#accentGrad)" />
+  <text x="96" y="210" font-family="Georgia, serif" font-size="26" fill="#E9E6EC" letter-spacing="4">UNDANGAN</text>
+  <text x="96" y="305" font-family="Georgia, serif" font-size="68" font-weight="bold" fill="#FFFFFF">Ibadah Perayaan</text>
+  <text x="96" y="385" font-family="Georgia, serif" font-size="68" font-weight="bold" fill="#FFFFFF">Natal Bersama</text>
+  <text x="96" y="470" font-family="Arial, sans-serif" font-size="28" fill="#E9E6EC">Senin, 28 Desember 2026 · 18.00 WITA – selesai</text>
+</svg>

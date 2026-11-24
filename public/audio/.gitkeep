@@ -1,0 +1,1 @@
+# Letakkan file musik latar bernama bgm.mp3 di folder ini, lalu ubah ENABLE_MUSIC menjadi true di src/config/event.js.

@@ -1,0 +1,100 @@
+{
+  "entities": {
+    "Rsvp": {
+      "title": "Rsvp",
+      "description": "Data konfirmasi kehadiran tamu Ibadah Perayaan Natal Bersama 2026.",
+      "type": "object",
+      "properties": {
+        "namaLengkap": {
+          "type": "string",
+          "description": "Nama lengkap pendaftar utama.",
+          "minLength": 3,
+          "maxLength": 120
+        },
+        "nomorHp": {
+          "type": "string",
+          "description": "Nomor HP asli sesuai input pendaftar.",
+          "minLength": 9,
+          "maxLength": 16,
+          "pattern": "^\\+?[0-9]+$"
+        },
+        "nomorHpKanonik": {
+          "type": "string",
+          "description": "Nomor HP terstandarisasi dalam format +62.",
+          "minLength": 11,
+          "maxLength": 16,
+          "pattern": "^\\+62[0-9]{8,13}$"
+        },
+        "phoneHash": {
+          "type": "string",
+          "description": "Hash SHA-256 hex dari nomorHpKanonik sebagai kunci unik dokumen.",
+          "minLength": 64,
+          "maxLength": 64,
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "alamat": {
+          "type": "string",
+          "description": "Alamat tempat tinggal tamu.",
+          "minLength": 1,
+          "maxLength": 500
+        },
+        "sumberUndangan": {
+          "type": "string",
+          "description": "Sumber informasi undangan.",
+          "enum": ["Teman", "Keluarga", "Gereja", "Media Sosial"]
+        },
+        "jumlahPeserta": {
+          "type": "integer",
+          "description": "Total jumlah peserta yang didaftarkan (1 hingga 10 orang)."
+        },
+        "namaPendamping": {
+          "type": "array",
+          "description": "Daftar nama orang yang diajak atau didaftarkan bersama pendaftar utama."
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Waktu pencatatan konfirmasi di server Firestore."
+        }
+      },
+      "required": [
+        "namaLengkap",
+        "nomorHp",
+        "nomorHpKanonik",
+        "phoneHash",
+        "alamat",
+        "sumberUndangan",
+        "jumlahPeserta",
+        "namaPendamping",
+        "createdAt"
+      ]
+    },
+    "RsvpPhoneLock": {
+      "title": "RsvpPhoneLock",
+      "description": "Penanda unik non-PII berbasis hash SHA-256 nomor HP untuk menolak pengisian ganda secara atomik.",
+      "type": "object",
+      "properties": {
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Waktu pencatatan kunci unik di server Firestore."
+        }
+      },
+      "required": ["createdAt"]
+    }
+  },
+  "firestore": {
+    "/rsvps/{phoneHash}": {
+      "schema": {
+        "$ref": "#/entities/Rsvp"
+      },
+      "description": "Menyimpan data RSVP lengkap tamu. Hanya dapat dibuat satu kali per nomor HP unik dan hanya dapat dibaca oleh akun panitia terverifikasi."
+    },
+    "/rsvp_phones/{phoneHash}": {
+      "schema": {
+        "$ref": "#/entities/RsvpPhoneLock"
+      },
+      "description": "Koleksi indeks tanpa PII untuk pengecekan dan penguncian keunikan nomor HP secara atomik."
+    }
+  }
+}
